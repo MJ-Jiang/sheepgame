@@ -12,7 +12,7 @@ const loseAudioRef = ref<HTMLAudioElement | undefined>()
 const welAudioRef = ref<HTMLAudioElement | undefined>()
 const finalAudioRef = ref<HTMLAudioElement | undefined>()
 
-const debugMode = true 
+
 const curLevel = ref(1)
 const showTip = ref(false)
 const LevelConfig = [
@@ -107,31 +107,7 @@ function handleLose() {
   }, 500)
 }
 
-// onMounted(() => {
-//   curLevel.value = 0
-  
-//   showTip.value = true
-//   setTimeout(() => {
-//     showTip.value = false
-//     initData(LevelConfig[curLevel.value])
-//     curLevel.value++
-//   }, 1500)
-// })
-onMounted(() => {
-  if (debugMode) {
-    // 你想看哪一关就设置哪一关的 index（从 0 开始）
-    curLevel.value = 2 // 看第三关
-    initData(LevelConfig[curLevel.value])
-  } else {
-    curLevel.value = 0
-    showTip.value = true
-    setTimeout(() => {
-      showTip.value = false
-      initData(LevelConfig[curLevel.value])
-      curLevel.value++
-    }, 1500)
-  }
-})
+
 
 
 </script>
@@ -168,11 +144,27 @@ onMounted(() => {
     </template>
   </div>
 
-  <transition name="bounce">
-    <div v-if="isWin" color="#000" flex items-center justify-center w-full text-28px fw-bold>
-      成功加入柠圈~
-    </div>
-  </transition>
+<transition name="fade-bounce">
+  <div
+    v-if="isWin"
+    class="fixed left-1/2 top-1/2 z-50 text-center px-6 py-3 rounded-xl shadow-lg whitespace-nowrap"
+    style="
+      transform: translate(-50%, -50%);
+      background-color: #FFF5C7;
+      color: #545454;
+      font-size: 30px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    "
+  >
+    🎉 成功加入柠圈 ~
+  </div>
+</transition>
+
+
+
+
 
   <transition name="fade-bounce">
     <div
