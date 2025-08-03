@@ -1,5 +1,8 @@
 import confetti from 'canvas-confetti'
 
+/**
+ * 🎆 五彩斑斓的烟花持续一段时间
+ */
 export function fireworks() {
   const duration = 15 * 1000
   const animationEnd = Date.now() + duration
@@ -9,23 +12,30 @@ export function fireworks() {
     return Math.random() * (max - min) + min
   }
 
-  const interval: NodeJS.Timer = setInterval(() => {
+  const interval: number = window.setInterval(() => {
     const timeLeft = animationEnd - Date.now()
 
-    if (timeLeft <= 0)
-      return clearInterval(interval)
+    if (timeLeft <= 0) {
+      clearInterval(interval)
+      return
+    }
 
     const particleCount = 50 * (timeLeft / duration)
-    // since particles fall down, start a bit higher than random
-    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }))
-    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }))
+
+    confetti(Object.assign({}, defaults, {
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+    }))
+    confetti(Object.assign({}, defaults, {
+      particleCount,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+    }))
   }, 250)
 }
 
-export function schoolPride() {
-  const end = Date.now() + (15 * 1000)
 
-  // go Buckeyes!
+export function schoolPride() {
+  const end = Date.now() + 15 * 1000
   const colors = [
     '#ffa62d',
     '#ff5e7e',
@@ -34,9 +44,9 @@ export function schoolPride() {
     '#88ff5a',
     '#fcff42',
     '#ff36ff',
-  ];
+  ]
 
-  (function frame() {
+  ;(function frame() {
     confetti({
       particleCount: 2,
       angle: 60,
@@ -54,8 +64,9 @@ export function schoolPride() {
 
     if (Date.now() < end)
       requestAnimationFrame(frame)
-  }())
+  })()
 }
+
 
 export function basicCannon() {
   confetti({

@@ -39,7 +39,7 @@ function handleClick() {
     <!-- {{ node.zIndex }}-{{ node.type }} -->
     <!-- {{ node.id }} -->
     <img v-if="IMG_MAP[node.type]":src="IMG_MAP[node.type]" width="40" height="40" :alt="`${node.type}`">
-    <div v-if="isFreeze" class="mask" />
+    <div v-if="isFreeze" class="mask" ></div>
   </div>
 </template>
 

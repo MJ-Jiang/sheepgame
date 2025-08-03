@@ -4,6 +4,7 @@ import Card from './components/card.vue'
 import { useGame } from './core/useGame'
 import { basicCannon, schoolPride } from './core/utils'
 
+
 const containerRef = ref<HTMLElement | undefined>()
 const clickAudioRef = ref<HTMLAudioElement | undefined>()
 const dropAudioRef = ref<HTMLAudioElement | undefined>()
@@ -107,6 +108,18 @@ function handleLose() {
   }, 500)
 }
 
+onMounted(() => {
+  curLevel.value = 0
+  
+  showTip.value = true
+  setTimeout(() => {
+    showTip.value = false
+    initData(LevelConfig[curLevel.value])
+    curLevel.value++
+  }, 1500)
+})
+
+
 
 
 
@@ -115,9 +128,9 @@ function handleLose() {
 <template>
   <div flex flex-col w-full h-full>
     <div class="w-full h-[60px] mt-[10px] flex items-center justify-center text-[32px] font-semibold text-center" style="color: #545454;">
-  <img src="lemon.png" alt="柠" class="h-[48px] w-auto mx-[8px] align-middle" />
+  <img src="./assets/lemon.png" alt="柠" class="h-[48px] w-auto mx-[8px] align-middle" ></img>
   <span class="inline-block mx-[4px]">了个</span>
-  <img src="lemon.png" alt="柠" class="h-[48px] w-auto relative left-[-4px] align-middle" />
+  <img src="./assets/lemon.png" alt="柠" class="h-[48px] w-auto relative left-[-4px] align-middle"></img>
 </div>
 
 
@@ -224,16 +237,15 @@ function handleLose() {
     <div w-full color="#FFF5C7" fw-600 text-center pb-10px>
       <span mr-20px style="color:#FFF5C7">designer: finMomo</span>
       by: Xc
-      <a
-        class="icon-btn"
-        color="#FFF5C7"
-        i-carbon-logo-github
-        rel="noreferrer"
-        href="https://github.com/chenxch"
-        target="_blank"
-        title="GitHub"
+<a
+  class="icon-btn i-carbon-logo-github"
+  style="color: #FFF5C7;"
+  rel="noreferrer"
+  href="https://github.com/chenxch"
+  target="_blank"
+  title="GitHub"
+></a>
 
-      />
       <span
         text-12px
         color="#00000018"
@@ -242,7 +254,7 @@ function handleLose() {
           class="icon-btn"
           text-2
           i-carbon:arrow-up-left
-        />
+        ></span>
         star buff</span>
     </div>
     <audio
@@ -250,37 +262,37 @@ function handleLose() {
       style="display: none;"
       controls
       src="./audio/click.mp3"
-    />
+    ></audio>
     <audio
       ref="dropAudioRef"
       style="display: none;"
       controls
       src="./audio/drop.mp3"
-    />
+    ></audio>
     <audio
       ref="winAudioRef"
       style="display: none;"
       controls
       src="./audio/win.mp3"
-    />
+    ></audio>
     <audio
       ref="loseAudioRef"
       style="display: none;"
       controls
       src="./audio/lose.mp3"
-    />
+    ></audio>
     <audio
       ref="welAudioRef"
       style="display: none;"
       controls
       src="./audio/welcome.mp3"
-    />
+    ></audio>
     <audio
   ref="finalAudioRef"
   style="display: none;"
   controls
   src="./audio/final.mp3"
-/>
+></audio>
 
   </div>
 </template>
