@@ -14,7 +14,10 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-
+html, body {
+  touch-action: manipulation; /* 禁止双击缩放等手势 */
+  overscroll-behavior: none;
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -80,4 +83,20 @@ html{
   button {
     background-color: #f9f9f9;
   }
+}
+.fade-bounce-enter-active,
+.fade-bounce-leave-active {
+  transition: all 0.4s ease;
+}
+
+.fade-bounce-enter-from,
+.fade-bounce-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+}
+
+.fade-bounce-enter-to,
+.fade-bounce-leave-from {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }

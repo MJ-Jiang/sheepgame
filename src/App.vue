@@ -10,6 +10,9 @@ const dropAudioRef = ref<HTMLAudioElement | undefined>()
 const winAudioRef = ref<HTMLAudioElement | undefined>()
 const loseAudioRef = ref<HTMLAudioElement | undefined>()
 const welAudioRef = ref<HTMLAudioElement | undefined>()
+const finalAudioRef = ref<HTMLAudioElement | undefined>()
+
+const debugMode = true 
 const curLevel = ref(1)
 const showTip = ref(false)
 const LevelConfig = [
@@ -59,7 +62,12 @@ function handleDropCard() {
 }
 
 function handleWin() {
-  winAudioRef.value?.play()
+  if(curLevel.value===LevelConfig.length){
+    finalAudioRef.value?.play()
+  }else{
+      winAudioRef.value?.play()
+  }
+
   // fireworks()
   if (curLevel.value < LevelConfig.length) {
     basicCannon()
@@ -99,39 +107,84 @@ function handleLose() {
   }, 500)
 }
 
+// onMounted(() => {
+//   curLevel.value = 0
+  
+//   showTip.value = true
+//   setTimeout(() => {
+//     showTip.value = false
+//     initData(LevelConfig[curLevel.value])
+//     curLevel.value++
+//   }, 1500)
+// })
 onMounted(() => {
-  initData()
+  if (debugMode) {
+    // 你想看哪一关就设置哪一关的 index（从 0 开始）
+    curLevel.value = 2 // 看第三关
+    initData(LevelConfig[curLevel.value])
+  } else {
+    curLevel.value = 0
+    showTip.value = true
+    setTimeout(() => {
+      showTip.value = false
+      initData(LevelConfig[curLevel.value])
+      curLevel.value++
+    }, 1500)
+  }
 })
+
+
 </script>
 
 <template>
   <div flex flex-col w-full h-full>
-    <div text-44px text-center w-full color="#000" fw-600 h-60px flex items-center justify-center mt-10px>
-      兔了个兔
-    </div>
-    <div ref="containerRef" flex-1 flex>
-      <div w-full relative flex-1>
-        <template v-for="item in nodes" :key="item.id">
-          <transition name="slide-fade">
-            <Card
-              v-if="[0, 1].includes(item.state)"
-              :node="item"
-              @click-card="handleSelect"
-            />
-          </transition>
-        </template>
-      </div>
-      <transition name="bounce">
-        <div v-if="isWin" color="#000" flex items-center justify-center w-full text-28px fw-bold>
-          成功加入兔圈~
-        </div>
+    <div class="w-full h-[60px] mt-[10px] flex items-center justify-center text-[32px] font-semibold text-center" style="color: #545454;">
+  <img src="lemon.png" alt="柠" class="h-[48px] w-auto mx-[8px] align-middle" />
+  <span class="inline-block mx-[4px]">了个</span>
+  <img src="lemon.png" alt="柠" class="h-[48px] w-auto relative left-[-4px] align-middle" />
+</div>
+
+
+<!-- 卡牌区域：始终居中在标题和底部卡槽之间 -->
+<div class="flex-1 flex justify-center" :class="curLevel >= 3 ? 'items-start' : 'items-center'">
+  <div
+    class="relative"
+    ref="containerRef"
+    :style="{
+      width: '360px',
+      height: 'auto',
+      marginTop: curLevel >= 2 ? '100px' : '0',
+    }"
+  >
+
+    <template v-for="item in nodes" :key="item.id">
+      <transition name="slide-fade">
+        <Card
+          v-if="[0, 1].includes(item.state)"
+          :node="item"
+          @click-card="handleSelect"
+        />
       </transition>
-      <transition name="bounce">
-        <div v-if="showTip" color="#000" flex items-center justify-center w-full text-28px fw-bold>
-          第{{ curLevel + 1 }}关
-        </div>
-      </transition>
+    </template>
+  </div>
+
+  <transition name="bounce">
+    <div v-if="isWin" color="#000" flex items-center justify-center w-full text-28px fw-bold>
+      成功加入柠圈~
     </div>
+  </transition>
+
+  <transition name="fade-bounce">
+    <div
+      v-if="showTip"
+      class="fixed left-1/2 top-1/2 z-50 text-[28px] font-bold text-black bg-[#FFF5C7] px-4 py-2 rounded shadow-md"
+      style="transform: translate(-50%, -50%); color:#545454"
+    >
+      第{{ curLevel + 1 }}关
+    </div>
+  </transition>
+</div>
+
 
     <div text-center h-50px flex items-center justify-center>
       <Card
@@ -141,7 +194,7 @@ onMounted(() => {
       />
     </div>
     <div w-full flex items-center justify-center>
-      <div border="~ 4px dashed #000" w-295px h-44px flex>
+      <div border="~ 4px dashed #FFF5C7" w-295px h-44px flex>
         <template v-for="item in selectedNodes" :key="item.id">
           <transition name="bounce">
             <Card
@@ -155,24 +208,39 @@ onMounted(() => {
     </div>
 
     <div h-50px flex items-center w-full justify-center>
-      <button :disabled="removeFlag" mr-10px @click="handleRemove">
-        移出前三个
-      </button>
-      <button :disabled="backFlag" @click="handleBack">
-        回退
-      </button>
+<button
+  :disabled="removeFlag"
+  :class="removeFlag?'text-[#ccc]':'text-[#545454]'"
+  mr-10px
+  @click="handleRemove"
+  style="background-color: #FFF5C7; "
+>
+  移出前三个
+</button>
+
+<button
+  :disabled="backFlag"
+  :class="backFlag?'text-[#ccc]':'text-[#545454]'"
+  @click="handleBack"
+  style="background-color: #FFF5C7; "
+>
+  回退
+</button>
+
+
     </div>
-    <div w-full color="#000" fw-600 text-center pb-10px>
-      <span mr-20px>designer: Teacher Face</span>
+    <div w-full color="#FFF5C7" fw-600 text-center pb-10px>
+      <span mr-20px style="color:#FFF5C7">designer: finMomo</span>
       by: Xc
       <a
         class="icon-btn"
-        color="#000"
+        color="#FFF5C7"
         i-carbon-logo-github
         rel="noreferrer"
         href="https://github.com/chenxch"
         target="_blank"
         title="GitHub"
+
       />
       <span
         text-12px
@@ -215,12 +283,19 @@ onMounted(() => {
       controls
       src="./audio/welcome.mp3"
     />
+    <audio
+  ref="finalAudioRef"
+  style="display: none;"
+  controls
+  src="./audio/final.mp3"
+/>
+
   </div>
 </template>
 
 <style>
 body{
-  background-color: #c3fe8b;
+  background-color: #FFD64F;
 }
 
 .bounce-enter-active {

@@ -38,7 +38,7 @@ function handleClick() {
   >
     <!-- {{ node.zIndex }}-{{ node.type }} -->
     <!-- {{ node.id }} -->
-    <img :src="IMG_MAP[node.type]" width="40" height="40" :alt="`${node.type}`">
+    <img v-if="IMG_MAP[node.type]":src="IMG_MAP[node.type]" width="40" height="40" :alt="`${node.type}`">
     <div v-if="isFreeze" class="mask" />
   </div>
 </template>
@@ -48,15 +48,15 @@ function handleClick() {
   width: 40px;
   height: 40px;
   /* border: 1px solid red; */
-  background: #f9f7e1;
-  color:#000;
+  background: #FFF5C7;
+  color:#bebebe;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   border-radius: 4px;
-  border: 1px solid #000;
-  box-shadow: 1px 5px 5px -1px #000;
+  border: 1px solid #545454;
+  box-shadow: 1px 3px 2px -1px #545454;
   cursor: pointer;
 }
 img{
